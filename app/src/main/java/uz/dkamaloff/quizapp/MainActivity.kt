@@ -12,26 +12,30 @@ class MainActivity : AppCompatActivity() {
 		setContentView(R.layout.activity_main)
 
 		val question: Question = Question("Quyosh G\'arbdan chiqadi", false)
+		val questions = mutableListOf<Question>()
+		questions.add(Question("Samarkand is the capital of Uzbekistan", false))
+		questions.add(Question("Nil is the longest river", true))
+		questions.add(Question("Current year is 2019", true))
+		questions.add(Question("Moon is the planet", false))
 
 		question_tv.text = question.questionText
 
 		true_btn.setOnClickListener {
-			if (question.answer == true) {
-				showToast("Sizning javobingiz to\'g\'ri")
-			} else {
-				showToast("Sizning javobingiz noto\'g\'ri")
-			}
+			checkAnswer(true, question.answer)
 		}
 
 		false_btn.setOnClickListener {
-			if (question.answer == false) {
-				showToast("Sizning javobingiz to\'g\'ri")
-			} else {
-				showToast("Sizning javobingiz noto\'g\'ri")
-			}
+			checkAnswer(false, question.answer)
 		}
 	}
 
+	private fun checkAnswer(userPressed: Boolean, answer: Boolean) {
+		if (userPressed == answer) {
+			showToast("Sizning javobingiz to\'g\'ri")
+		} else {
+			showToast("Sizning javobingiz noto\'g\'ri")
+		}
+	}
 
 	private fun showToast(message: String) {
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

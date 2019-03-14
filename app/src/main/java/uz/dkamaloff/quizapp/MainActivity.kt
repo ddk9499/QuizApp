@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+	val questions = mutableListOf<Question>()
 	lateinit var question: Question
 	var currentIndex = 0
 
@@ -14,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		val questions = mutableListOf<Question>()
 		questions.add(Question("Quyosh G\'arbdan chiqadi", false))
 		questions.add(Question("Samarkand is the capital of Uzbekistan", false))
 		questions.add(Question("Nil is the longest river", true))
@@ -34,14 +34,23 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		next_btn.setOnClickListener {
-			if (currentIndex == questions.size - 1) {
-				currentIndex = 0
-			} else {
-				currentIndex = currentIndex % (questions.size - 1) + 1
-			}
-			question = questions[currentIndex]
-			question_tv.text = question.questionText
+			currentIndex = (currentIndex + 1) % questions.size
+			updateUI()
 		}
+
+		prev_btn.setOnClickListener {
+			if (currentIndex == 0) {
+				currentIndex = questions.size - 1
+			} else {
+				currentIndex = currentIndex % questions.size - 1
+			}
+			updateUI()
+		}
+	}
+
+	private fun updateUI() {
+		question = questions[currentIndex]
+		question_tv.text = question.questionText
 	}
 
 	private fun checkAnswer(userPressed: Boolean, answer: Boolean) {

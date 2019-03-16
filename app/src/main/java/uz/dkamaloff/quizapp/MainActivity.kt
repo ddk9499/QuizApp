@@ -39,11 +39,7 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		prev_btn.setOnClickListener {
-			if (currentIndex == 0) {
-				currentIndex = questions.size - 1
-			} else {
-				currentIndex = currentIndex % questions.size - 1
-			}
+			currentIndex = (currentIndex + questions.size - 1) % questions.size
 			updateUI()
 		}
 	}

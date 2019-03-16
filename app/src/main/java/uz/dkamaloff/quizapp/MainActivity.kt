@@ -1,5 +1,7 @@
 package uz.dkamaloff.quizapp
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -10,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 	val questions = mutableListOf<Question>()
 	lateinit var question: Question
 	var currentIndex = 0
+	private val cheatRequestCode = 753
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -41,6 +44,20 @@ class MainActivity : AppCompatActivity() {
 		prev_btn.setOnClickListener {
 			currentIndex = (currentIndex + questions.size - 1) % questions.size
 			updateUI()
+		}
+
+		cheat_btn.setOnClickListener {
+			val a = CheatActivity.newIntent(this, questions[currentIndex].answer)
+			startActivityForResult(a, cheatRequestCode)
+			//			finish()   // IF WE WANT DESTROY THIS ACTIVITY.
+		}
+	}
+
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		if (requestCode == cheatRequestCode) {
+			if (resultCode == Activity.RESULT_OK) {
+				// TODO: 3/16/19 nimadir iw qiliw kerak
+			}
 		}
 	}
 

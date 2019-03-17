@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 	lateinit var question: Question
 	var currentIndex = 0
 	private val cheatRequestCode = 753
+	var isCheater = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -39,11 +40,13 @@ class MainActivity : AppCompatActivity() {
 		next_btn.setOnClickListener {
 			currentIndex = (currentIndex + 1) % questions.size
 			updateUI()
+			isCheater = false
 		}
 
 		prev_btn.setOnClickListener {
 			currentIndex = (currentIndex + questions.size - 1) % questions.size
 			updateUI()
+			isCheater = false
 		}
 
 		cheat_btn.setOnClickListener {
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		if (requestCode == cheatRequestCode) {
 			if (resultCode == Activity.RESULT_OK) {
-				// TODO: 3/16/19 nimadir iw qiliw kerak
+				isCheater = CheatActivity.wasAnswerShown(data!!)
 			}
 		}
 	}
@@ -67,7 +70,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun checkAnswer(userPressed: Boolean, answer: Boolean) {
-		if (userPressed == answer) {
+		if (isCheater) {
+			showToast("Siz javobni kurdingiz")
+		} else if (userPressed == answer) {
 			showToast("Sizning javobingiz to\'g\'ri")
 		} else {
 			showToast("Sizning javobingiz noto\'g\'ri")
